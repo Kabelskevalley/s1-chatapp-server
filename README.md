@@ -1,4 +1,4 @@
-Stroke! Server Anwendung
+Stroke! Server Anwendung [![Build Status](https://travis-ci.org/Kabelskevalley/s1-chatapp-server.svg?branch=master)](https://travis-ci.org/Kabelskevalley/s1-chatapp-server)
 =======
 
 Dies ist die Serveranwendung um die *Stroke!* Messenger App zu betreiben. Du findest das Repository der App unter [Kabelskevalley/s1-chatapp-android](https://github.com/Kabelskevalley/s1-chatapp-android).
