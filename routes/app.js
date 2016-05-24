@@ -16,6 +16,20 @@ router.post('/register', function(req, res){
     })
 });
 
+router.get('/channels', function(req, res){
+    res.render('channels')
+});
+
+router.post('/channels', function(req, res){
+    var mongoose = require('mongoose');
+    var Channel = mongoose.model('channels', require('../schemas/channel'));
+    
+    Channel.create({id: req.body.id, name: req.body.name},
+        function (err, channel) {
+          res.redirect('/channels')
+        });
+});
+
 // router.get('/chat', function(req, res){
 //     res.render('chat')
 // });

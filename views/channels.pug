@@ -1,0 +1,18 @@
+extends ./layout.pug
+
+block title
+    title Stroke! chat
+
+block styles
+    link(rel='stylesheet', href='/css/register.css')
+
+block content
+    ul.pages
+        li.register.page
+            form.form(action='/channels', method='post')
+                h3.title Neuen Kanal anlegen
+                input(type='text', name='id', placeholder='Identifier', maxlength='14')
+                br
+                input(type='text', name='name', placeholder='Name')
+                br
+                button.btn.btn-primary Erstellen
