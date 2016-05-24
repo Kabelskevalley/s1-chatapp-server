@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
 
 var Channel = mongoose.Schema({
-    id: String,
-    name: String,
-    thumbnail: String,
-});
+  id: String,
+  name: String,
+  thumbnail: String
+})
 
-module.exports = Channel;
+module.exports = Channel

@@ -1,41 +1,42 @@
-var auth = require('../lib/auth');
-var express = require('express');
-var router = express.Router();
+var auth = require('../lib/auth')
+var express = require('express')
+var router = express.Router()
 
-router.get('/', function(req, res){
-    res.render('index')
-});
+router.get('/', function (req, res) {
+  res.render('index')
+})
 
-router.get('/register', function(req, res){
-    res.render('register')
-});
+router.get('/register', function (req, res) {
+  res.render('register')
+})
 
-router.post('/register', function(req, res){
-    auth.register(req.body.username, req.body.password, req.body.name, req.body.thumbnail, function (success, user) {
-        res.redirect('/register')
+router.post('/register', function (req, res) {
+  auth.register(req.body.username, req.body.password, req.body.name, req.body.thumbnail, function (success, user) {
+    res.redirect('/register')
+  })
+})
+
+router.get('/channels', function (req, res) {
+  res.render('channels')
+})
+
+router.post('/channels', function (req, res) {
+  var mongoose = require('mongoose')
+  var Channel = mongoose.model('channels', require('../schemas/channel'))
+
+  Channel.create({id: req.body.id, name: req.body.name},
+    function (err, channel) {
+      console.log(err)
+      res.redirect('/channels')
     })
-});
-
-router.get('/channels', function(req, res){
-    res.render('channels')
-});
-
-router.post('/channels', function(req, res){
-    var mongoose = require('mongoose');
-    var Channel = mongoose.model('channels', require('../schemas/channel'));
-    
-    Channel.create({id: req.body.id, name: req.body.name},
-        function (err, channel) {
-          res.redirect('/channels')
-        });
-});
+})
 
 // router.get('/chat', function(req, res){
-//     res.render('chat')
-// });
+//   res.render('chat')
+// })
 //
 // router.get('/login', function(req, res){
-//     res.render('login')
-// });
+//   res.render('login')
+// })
 
-module.exports = router;
+module.exports = router
