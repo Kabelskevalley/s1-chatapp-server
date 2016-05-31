@@ -5,19 +5,24 @@ var mongoose = require('mongoose')
 var Channel = mongoose.model('channels', require('../schemas/channel'))
 
 router.get('/channels', function (req, res) {
-  Channel.find({}, function (err, channels) {
-    console.log(err)
-    res.send(channels)
+  auth.authorize(req.query.token, function (success, user) {
+    if (success) {
+      Channel.find({}, function (err, channels) {
+        if (err) console.log(err)
+        res.send(channels)
+      })
+    } else {
+      res.status(401).send({error: 'invalid token'})
+    }
   })
 })
 
-// needs auth token
 router.post('/channels', function (req, res) {
-  auth.authorize(req.body.token, function (success, user) {
+  auth.authorize(req.query.token, function (success, user) {
     if (success) {
-      Channel.create({id: req.body.id, name: req.body.name},
+      Channel.create({id: req.body.id, name: req.body.name, thumbnail: req.body.thumbnail},
         function (err, channel) {
-          console.log(err)
+          if (err) console.log(err)
           res.send(channel)
         })
     } else {
@@ -54,6 +59,25 @@ router.post('/register', function (req, res) {
         res.status(500).send({error: 'error creating user'})
       }
     })
+})
+
+router.post('/profile', function (req, res) {
+  auth.authorize(req.body.token, function (success, user) {
+    if (success) {
+      auth.update(user, req.body, function(success, user) {
+        if (success) {
+          res.send({
+            name: user.name,
+            thumbnail: user.thumbnail
+          })
+        } else {
+          res.status(401).send({error: 'error while updating'})
+        }
+      })
+    } else {
+      res.status(401).send({error: 'invalid token'})
+    }
+  })
 })
 
 router.post('/auth', function (req, res) {
