@@ -17,7 +17,13 @@ router.post('/register', function (req, res) {
 })
 
 router.get('/channels', function (req, res) {
-  res.render('channels')
+  var mongoose = require('mongoose')
+  var Channel = mongoose.model('channels', require('../schemas/channel'))
+
+  Channel.find({}, function (err, channels) {
+    console.log(err)
+    res.render('channels', {channels: channels})
+  })
 })
 
 router.post('/channels', function (req, res) {
@@ -27,6 +33,18 @@ router.post('/channels', function (req, res) {
   Channel.create({id: req.body.id, name: req.body.name},
     function (err, channel) {
       console.log(err)
+      res.redirect('/channels')
+    })
+})
+
+// TODO should be a 'delete' method, use method spoofing
+router.post('/channels/:id', function (req, res) {
+  var mongoose = require('mongoose')
+  var Channel = mongoose.model('channels', require('../schemas/channel'))
+
+  Channel.find({id: req.params.id}).remove(
+    function (err) {
+      if (err) console.log(err)
       res.redirect('/channels')
     })
 })

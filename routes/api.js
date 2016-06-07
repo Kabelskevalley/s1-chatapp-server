@@ -31,6 +31,20 @@ router.post('/channels', function (req, res) {
   })
 })
 
+router.delete('/channels/:id', function (req, res) {
+  auth.authorize(req.query.token, function (success, user) {
+    if (success) {
+      Channel.find({id: req.params.id}).remove(
+        function (err) {
+          if (err) console.log(err)
+          res.send({error: null})
+        })
+    } else {
+      res.status(401).send({error: 'invalid token'})
+    }
+  })
+})
+
 router.post('/login', function (req, res) {
   auth.login(req.body.username, req.body.password,
     function (success, user) {
@@ -64,7 +78,7 @@ router.post('/register', function (req, res) {
 router.post('/profile', function (req, res) {
   auth.authorize(req.body.token, function (success, user) {
     if (success) {
-      auth.update(user, req.body, function(success, user) {
+      auth.update(user, req.body, function (success, user) {
         if (success) {
           res.send({
             name: user.name,
